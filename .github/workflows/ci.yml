@@ -1,6 +1,62 @@
-- uses: actions/checkout@v3
-- uses: actions/setup-python@v4
-  with:
-    python-version: '3.x'
-- run: pip install -r requirements.txt
-- run: pytest
+name: CI Pipeline
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Python environment
+      - name: Set Up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'  # Specify your required Python version
+
+      # Step 3: Install dependencies
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Step 4: Lint code with Flake8
+      - name: Lint Code
+        run: |
+          pip install flake8
+          flake8 app.py/ tests/
+
+      # Step 5: Run tests with pytest and measure coverage
+      - name: Run Tests with Coverage
+        run: |
+          pip install pytest pytest-cov
+          pytest --cov=app.py --cov-fail-under=80 tests/
+
+      # Step 6: Upload coverage report as an artifact
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: htmlcov/
+
+      # Step 7: Perform security scan with Bandit
+      - name: Security Scan with Bandit
+        run: |
+          pip install bandit
+          bandit -r app.py/
+
+      # Step 8: Initialize CodeQL analysis
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: python
+
+      # Step 9: Perform CodeQL analysis
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
