@@ -30,7 +30,7 @@ jobs:
       - name: Lint Code
         run: |
           pip install flake8
-          flake8 app.py/ tests/
+          flake8 app.py tests/
 
       # Step 5: Run tests with pytest and measure coverage
       - name: Run Tests with Coverage
@@ -49,7 +49,7 @@ jobs:
       - name: Security Scan with Bandit
         run: |
           pip install bandit
-          bandit -r app.py/
+          bandit -r app.py
 
       # Step 8: Initialize CodeQL analysis
       - name: Initialize CodeQL
