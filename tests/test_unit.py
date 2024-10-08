@@ -1,7 +1,6 @@
-# tests/test_unit.py
-
 import unittest
 from app import get_data
+
 
 class TestApp(unittest.TestCase):
     def test_get_data(self):
@@ -13,6 +12,8 @@ class TestApp(unittest.TestCase):
         # Since get_data uses jsonify, it returns a Response object
         # We need to get the JSON data from the response
         self.assertEqual(response.get_json(), expected_data)
+
+
 
 if __name__ == '__main__':
     unittest.main()

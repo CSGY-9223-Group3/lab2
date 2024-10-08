@@ -1,7 +1,6 @@
-# tests/test_integration.py
-
 import unittest
 from app import app
+
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
@@ -26,6 +25,8 @@ class TestIntegration(unittest.TestCase):
         }
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.get_json(), expected_data)
+
+
 
 if __name__ == '__main__':
     unittest.main()

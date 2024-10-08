@@ -26,6 +26,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+
+      # Step 4: Check Code Formatting
+      - name: Check Code Formatting
+        run: |
+          pip install black
+          black --check app.py tests/
+        
+        
       # Step 4: Lint code with Flake8
       - name: Lint Code
         run: |
